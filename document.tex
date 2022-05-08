@@ -8,258 +8,182 @@
 
 % include metadata in the generated pdf file
 \pdfinfo{
-    /Title (The Occidental Computer Science Comprehensive Project: Goals, Timeline, Format, and Advice)
-    /Author (Justin Li)
+    /Title (Tutorial Report)
+    /Author (Maryo Botros)
 }
 
 % set the title and author information
-\title{The Occidental Computer Science Comprehensive Project: \\ Goals, Timeline, Format, and Advice}
-\author{Justin Li}
+\title{Tutorial Report}
+\author{Maryo Botros}
 \affiliation{Occidental College}
-\email{justinnhli@oxy.edu}
+\email{mbotros@oxy.edu}
 
 \begin{document}
 
 \maketitle
 
-\section{Introduction}
+\section{Methods and Evaluation}
+The tutorial I used aimed to teach Python using Mindstorms. The first part of the tutorial uses the robot called “Tricky.” This robot has two wheels and each wheel is controlled by a motor. This is important because this is how the robot navigates. If both wheels are moving forward, the robot will move forward, if both are moving backward, the robot will be moving backward. If the left wheel is moving forward and the right wheel is moving backward, the robot will be turning right. Finally, if the left wheel is moving backward and the right wheel is moving forward, the robot will be turning left. It uses distance sensors on the front, which will be used to help the robot avoid objects. 
 
-This document serves describes the Oxy CS Comps process.
-The first section describes the timeline of comps, as well as the main requirements of a comps project.
-Since one of the main deliverable is a final paper, there is then an interlude on {\LaTeX}, which you will use to write the paper.
-This document then goes into the sections of that final paper and what is expected of it.
-We conclude with some miscellaneous tips for successfully completing comps.
+The code will be written in the Mindstorms software. In order for Python to interface with the Lego specific methods and functions, it needs important classes to be imported, such as functions that control the motor or use information read by the sensors. Starting off, in the objects section, I have defined an object and in the objects section called “hub” and in the programming section I told the object to dot into the speaker and then dot into the beep() method. This is like telling the object  to look for the speaker and within the speaker, look for the .beep() method. When the code is run, the robot makes a faint beeping noise out of its speaker. 
+\begin{verbatim}
+from mindstorms import MShub, Motor, 
+Motorpair, ColorSensor, 
+DistcanceSensor, App
+from mindstroms.control import
+wait_for_seconds, wait_until, Timer 
+from mindstorms.operator import 
+greater_than, greater_than_or_equal_to, l
+ess_than, less_than_or_equal_to, 
+equal_to, not_equal_to
+import math 
 
-\section{Computer Science Comps}
+# Create your objects here
+hub = MSHub()
+ 
+# Write your program here
+hub.speaker.beep()
+\end{verbatim}
 
-Occidental's ``Comprehensive Requirement'' is a graduation requirement that serves two goals: ``to provide an opportunity for senior students to synthesize the essential[s] [...] of their academic field'', and ``to provide an opportunity for students to demonstrate competence in their field'' \cite{Occidental2022Comps}.
-For computer science, the breadth of the field means that comps leans heavily towards the second goal: most CS comps are large coding projects that showcase what a student has learned in their four years at Oxy.
-In that sense, a CS comps project is more like a Studio Arts comps project: you could draw from multiple subfields or focus on just one, but the essence is to take on a complex project of your choice while situating it within the methods of CS.
+Next, I will get the robot to move. I begin by creating a  movement\_motors object in the objects section and setting this equal to a MotorPair(‘A’, ‘B’), where A and B represent the left and right wheel on the robot. To get the robot to move, we use the move() function on the movement\_motors object and give it three parameters. The first parameter is a number value that represents how far we want to move, which will be 20. The second parameter represents the unit we want to use, which will be centimeters. The third parameter represents how much steering we want, which we will use 0. When this code is run, the robot moves forward 20 centimeters.
 
-\subsection{Timeline}
+\begin{verbatim}
+# Create your objects here
+hub = MSHub()
+movement_motors = MotorPair('A', 'B')
+     
+# Write your program here
+hub.speaker.beep()
+movement_motors.move(20, 'cm', )
+\end{verbatim}
+    
+Now we want to see if we can get the robot to move forward and then stop if it detects an obstacle in front of it, so that it is a bit smarter. To do this, we can tell the motors to start moving using the start() method. We want it to stop once it detects an obstacle coming closer to the distance sensor. In order to use the distance sensor, we will need to create an object for it in the objects section. This object will be called distance\_sensor  and it will be set equal to DistanceSensor(‘D’). Next in the programming section, we can now use this distance sensor to tell it to wait until it is closer than 10 centimeters using the wait\_for\_distance\_closer\_than(10, ‘cm’) function. After this, we can tell the robot to stop. After running this code, the robot will use the movement motors to move 20 centimeters and once it senses that an object is closer than 0 centimeters, using the distance sensor, it will use the movement motors to come to a complete stop. 
 
-Since comps is a significant undertaking, the CS major curriculum has two courses to support comps projects.
-Most students will take CS Junior Seminar in the spring of their junior year, then take CS Senior Seminar in the fall of their senior year.
-One of the main goals of Junior Seminar is to prepare students for their comps project, including selecting a topic, exploring the literature, and writing a detailed proposal of what they will do.
-The entirety of Senior Seminar is dedicated to students completing their comps; however, it is necessary to separate the Senior Seminar course from the comps graduation requirement.
-Senior Seminar is a required course for the CS major, and it concludes at the end of the fall semester with a grade.
-Comps, on the other hand, is an Oxy graduation requirement, and concludes at the end of the senior year with either ``fail'', ``pass'', or ``pass with distinction'' \cite{Occidental2022Comps}.
-While the sole purpose of Senior Seminar is to support students working on comps, it is possible for a student to complete the \textit{course} without completing the \textit{graduation requirement}.
-This could occur, for example, if the student ran out of time to finish the project, but submitted all the assignments for Senior Seminar.
-In that case, the student will continue working in the spring senior semester to complete their comps, until they have a ``pass'' or ``pass with distinction'' result.
-In short, the timeline for comps is:
+\begin{verbatim}
+# Create your objects here
+hub = MSHub()
+movement_motors = MotorPair('A', 'B')
+distance_sensor = DistanceSensor('D')
+ 
+# Write your program here
+hub.speaker.beep()
+# movement_motors.move(20, 'cm', )
+movement_motors.start()
+distance_sensor.
+wait_for_distance_closer_than(10, 'cm')
+movement_motors.stop()
 
-\vspace{\baselineskip}
-{\footnotesize
-\begin{tabular}{r|cl}
-    \textbf{Semester}       &  \textbf{Course}  &  \textbf{Deliverable(s)}          \\
-    \hline \\
-    \textbf{Junior Spring}  &  COMP 390         &  Comps proposal; Tutorial report  \\
-    \textbf{Summer}         &  -                &  Additional research              \\
-    \textbf{Senior Fall}    &  COMP 490         &  Comps final paper; Code repo     \\
-    \textbf{Senior Spring}  &  -                &  Revisions; Honors work           \\
-\end{tabular}
-}
-\vspace{\baselineskip}
+\end{verbatim}
 
-\subsection{Deliverables}
+For the second part of the tutorial, I learned a little bit more about motor control. Tricky will still be the robot used for this part, with the upgrade of the lifting arms and sensor package. This includes a motor that controls an arm as well as a color sensor on the back of the robot. 
 
-The two main deliverables for CS comps is the code from the project, submitted together with its documentation as a GitHub link, and a paper about the project.
-While the code component is straightforward and uncontroversial, some students may chafe against the idea of a paper.
+The first step for using these new modifications to the robot is to define the lifting arm in the objects section. We can define it as lifting\_arm = Motor(‘C’) because ‘C’ is where the lifting arm is connected to on the robot. To get the arm to move to a position, we can use the run.to.position method on the lifting\_arm object, with three different arguments. The first argument is the degrees that it is running to. The second argument is how you want to run to that position, with ‘shortest path’ as the default. There are also other substitutes for ‘shortest path’ such as ‘clockwise’ and ‘counterclockwise’. The final argument is the speed, which can take on any value from 1 to 100. When the code below is run, the robot moves the newly attached arm to position 270 or 270 degrees, using the shortest path or the direction in a circle that gets it to position 270 the quickest, at a speed of 10. It then moves to 0 degrees  0 or the lowest position, using the shortest path, at a speed of 10.  
 
-\begin{comment}
-    Why a paper?
-    Goals for the paper
-\end{comment}
+\begin{verbatim}
+# Create your objects here
+hub = MSHub()
+movement_motors = MotorPair('A', 'B')
+distance_sensor = DistanceSensor('D')
+lifting_arm = Motor('C')
+     
+     
+# Write your program here
+hub.speaker.beep()
+     
+# You can replace shortest path with 
+'clockwise' or 'counterclockwise'
+lifting_arm.run_to_posotion(270, 
+'shortest path', 10)
+lifting_arm.run_to_posotion(0, 
+'shortest path', 10)
+    
+\end{verbatim}
+    
+If we wanted to get the robot to complete a task, such as picking up a ball, we can combine the use of the movement motors, distance sensor and the arms. The way this could be executed is by using the  run\_to\_position method first to make sure the arms start out at the lowest point. We can then use the start() method on the movement\_motors to get them to start moving. We can then use the wait\_for\_distance\_closer\_than method on the distance\_sensor and pass in 7 centimeters as a parameter. After the distance sensors reach closer than 7 centimeters to the object, we can use the stop method and then the run\_to\_position method and get the arms to move to 270 degrees. To set the robot up, we can place a ball in front of the robot on a straight path, a few inches away. When the code below is run, the robot lowers its arms to the lowest position, it then begins to move forward until it is 7 centimeters away from the ball, stops, and then lifts its arms, but does not pick up the ball, because the movement\_motors move too fast and end up pushing the ball away from the robot too quickly. 
 
-Given these goals, the final paper should be written for an advanced CS undergraduate: someone who has finished Math Foundations, Data Structures, and Computer Organization, but may not have taken the appropriate upper-level courses.
-The paper does not need to explain everything, but should provide enough relevant details so the average reader can understand your results; a walkthrough of the sections of the paper can be found in Section \ref{sec:paper}.
-The paper will be written in LaTeX, to make all final papers uniform in style and to allow for psuedocode and mathematical equations; a template will be provided and required.
-To ensure there is sufficient context and detail, the paper should be about seven pages in length (excluding figures, tables, code, and references).
+\begin{verbatim}
+# Create your objects here
+hub = MSHub()
+movement_motors = MotorPair('A', 'B')
+distance_sensor = DistanceSensor('D')
+lifting_arm = Motor('C')
+     
+     
+# Write your program here
+hub.speaker.beep()
+     
+lifting_arm.run_to_posotion(0, 'shortest path', 10)
+movement_motors.start()
+distance_sensor.wait_for_distance_closer_than(7, 'cm')
+movement_motors.stop()
+lifting_arm.run_to_posotion(270, 'shortest path', 10)
+\end{verbatim}
+    
+Luckily, there is a way to change the speed of the movement moreos. Before the motors are started, we can use the set\_default\_speed method on the movement\_motors. The below code will reduce the speed of the movement motors down to a speed of 30, which is slower than the default speed. This way, the movement motors don’t move the robot too quickly, causing it to knock the ball away. When the line of code below is added before the movement motors are started, the motors will move slower. 
 
-The other major deliverable is the code, which should be made available on a public GitHub repository.
-Accompanying the code should be two pieces of documentation, both included in a \texttt{README.md}.
-First, there should be instructions for how to run the code, which should including how to find and install necessary software and packages, how to find and download relevant datasets, and what other requirements (hardware, spatial needs for VR, etc.) are needed.
-This should be written for an audience who is interested in reproducing your work and verifying your results.
-Second, there should be a brief overview of how the code is organized, including the major components that exist and the content and format of the data that is passed between them.
-This should be written for someone who is interested in extending your project --- say, by tweaking the parameters, or adding new functionality, or applying it to a new context.
+\begin{verbatim}
+movement_motors.set_default_speed(30)
+\end{verbatim}
+    
+Another motor function that is also useful is being able to use the move() function on the movement\_motors object to turn the robot. This function takes three parameters, a length to move, the unit of measurement, and the amount of degrees to turn. When the code below is executed, the robot will move 20 centimeters, turning 60 degrees to the right.
 
-More details about both deliverables will be provided in Junior and Seminar Seminar.
+\begin{verbatim}
+# Turn to the right
+movement_motors.move(20, 'cm', 60)
+    
+\end{verbatim}
+    
 
-\begin{comment}
-    something about non-code projects?
-\end{comment}
+\section{Discussion}
+This tutorial offered a lot of insight into how the Mindstorms Spark robot functions and how it can be programmed to complete different tasks. The robot has the ability to move straight, turn right or left, use its distance sensor to detect how close it is to objects in front of it, and it can use an arm to pick up items. The most useful part of this tutorial is learning the methods that allow the movement\_motors to make the robot go forward and turn left and right.   This project will most likely not require the use of arms since I will not need  to pick up items,  but it is still handy to understand the motor methods and the types of arguments they take. Although this tutorial only showed a few different capabilities of a mindstorms robot, it provided the most essential information for building and programming a robot that can use wheels to navigate its environment. 
 
-\subsection{Selecting a Comps Project}
+Going forward, to have the root execute the plan created by the hierarchical task network planner, I will only need to know how to get the robot to move forward, backward left and right, and this tutorial explained how to make the robot move in all directions, by calling the start() and move() methods on the robot’s object and passing in the proper arguments. For the part of the project where I will incorporate sensors, I will use the distance sensor, but I will most likely use multiple. Distance sensors, potentially three: one in the front, one on the right, and one on the left. This array of sensors will be most useful for receiving information on, while traversing a maze with straight edges and 90 degree corners. 
 
-For many students, selecting a topics for comps is a major source of stress.
-While this is an important decision, it is also one for which you will receive a lot of support.
-Choosing a topic, together with ensuring that you have the relevant background and experience for the project, is a major component of Junior Seminar.
-There have also been students who change their project during Senior Seminar, and still finished their comps within the semester; although this is not recommended, this delayed timeline shows how much leeway there is for exploration and backpedaling.
 
-As a rough guide, comps projects should be equivalent to the work of an upper-level CS elective, and should either dive deeply but narrowly into a subfield of CS, or reach broadly across subfields or across disciplines without being too shallow.
-The only constraint on the topic is that CS+Math and CS+X students must select a project that fits within their theme, and should check with their academic advisor to make sure this is the case.
-Although double majors could do both comps on the same topic, they must have aspects that are unique to each major.
-For example, a cognitive science and computer science double major could do both projects around biologically plausible neural networks, but the cognitive science project might be about comparing its activity to real brains, while the CS project might instead focus on its algorithmic performance.
-We will spend more time on this in class, but you might consider the following prompts in brainstorming your project:
+\section{Software documentation}
+\subsection{Part1}
 
-\begin{itemize}
-    \item What topics were you most interested in from your classes? What area of CS would you like to dive deeper into?
-    \item Alternately, what topic were you unable to take a class in (either due to full enrollments, or because Oxy doesn't offer it)?
-    \item What interdisciplinary topics or CS-adjacent topics would you like to explore?
-    \item What projects might be a good showcase of your abilities to potential employers in your desired field?
-\end{itemize}
+\begin{verbatim}
+# Robot object 
+hub = MSHub()
 
-A list of past comps projects can be found online.\footnote{\url{https://www.oxy.edu/academics/areas-study/computer-science/past-senior-comps-projects}}
+# Wheels object
+movement_motors = MotorPair('A', 'B')
 
-\section{Interlude: Using \LaTeX}
+# Distance sensor object
+distance_sensor = DistanceSensor('D')
 
-LaTeX (pronounced \textit{lah-teck} or \textit{lay-teck}), often stylized as {\LaTeX} and written as latex, is a document markup language and typesetting system.
-Building on the {\TeX} language created by Donald Knuth in 1978, LaTeX provides additional commands for common document needs such as sections, figures, and bibliographies.
-LaTeX is widely used in academia, especially in mathematical fields, due to how easy it is to write mathematical equations and its automatic management of references.
-Since it is a markup language, LaTeX source files are written in plain text, which also makes it compatible with version control systems like git.
+# Lifting arm object 
+lifting_arm = Motor('C')
+    
+# Make robot beep
+hub.speaker.beep()
 
-The most primitive syntax of LaTeX is the \textit{macro} or \textit{command}, which is always written with a backslash followed by the name of the command.
-The {\LaTeX} glyph, for example, can be created with the command \texttt{\textbackslash LaTeX}.
-Some commands take parameters, which are denoted in braces (e.g., \texttt{\textbackslash usepackage\{biblatex\}} will import the \texttt{biblatex} package), with some commands additionally accepting options in square brackets (e.g., \texttt{\textbackslash usepackage[style=numeric]\{biblatex\}}).
-The \texttt{\textbackslash begin} and \texttt{\textbackslash end} commands are special, as they indicate the start and end of an \textit{environment}.
-The content of a LaTeX document, for example, is surrounded by \texttt{\textbackslash begin\{document\}} and \texttt{\textbackslash end\{document\}}, indicating the text that should appear in the document.
+# Move robot 20 centimeters forward
+movement_motors.move(20, 'cm', )
 
-\begin{figure}
-    \centering
-    \includegraphics[width=.95\linewidth]{recursion.png}
-    \caption{
-        The current page of this paper, as an image.
-    }
-    \label{fig:first-page}
-\end{figure}
+# Turn robot 60 degrees to the right# Turn to 
+the right
+movement_motors.move(20, 'cm', 60)
 
-Beyond the basic syntax, much of learning LaTeX is learning the different commands and environments that exist.
-For example, text can be made \textbf{bold} with \texttt{\textbackslash textbf}, \textit{italic} with \texttt{\textbackslash textit}, and \texttt{monospaced} with \texttt{\textbackslash texttt} (the \texttt{tt} stands for for ``teletype'').
-Single dollar signs denote inline equations, so \texttt{\$E = mc \textasciicircum 2\$} will be rendered as $E = mc^2$.
-Double dollar signs will render the equation in display mode, which we can see with the quadratic formula:
 
-$$\frac{{-b \pm \sqrt {b^2 - 4ac} }}{{2a}}$$
+# Start moving robot 
+movement_motors.start()
 
-There are also a handful of common environments:
+# Stop moving robot
+movement_motors.stop()
 
-\begin{itemize}
-    \item \texttt{itemize} for bulletpoint lists
-    \item \texttt{enumerate} for numbered lists
-    \item \texttt{figure} for figures (see Figure \ref{fig:first-page})
-    \item \texttt{tabular} for tables
-    \item \texttt{lstlisting} for code listings (see Listing \ref{lst:python-hello-world})
-\end{itemize}
+# Detect a distance closer than 10 centimeters 
+distance_sensor.
+wait_for_distance_closer_than(10, 'cm')
 
-\begin{lstlisting}[
-    language=Python,
-    caption={Hello, World! in Python},
-    label={lst:python-hello-world},
-    float
-]
-def hello():
-    print('hello, world!')
-\end{lstlisting}
+# Move lifting arm to position 270
+lifting_arm.
+run_to_posotion(270, 'shortest path', 10)
 
-This covers the most frequently used commands, but as you might have already inferred, LaTeX is a vast and deep system, and can easily be overwhelming.
-We recommended reading through the \citetitle{Overleaf2021LearnLaTeXIn} tutorial \cite{Overleaf2021LearnLaTeXIn} and using the \citetitle{WikiBook2022LaTeX} \cite{WikiBook2022LaTeX} as reference.
-Beyond that, you should examine and play with the source of this document to gain working proficiency with LaTeX.
 
-One final note on writing in LaTeX.
-Since LaTeX is only a markup language, the source files must be compiled into a viewable form, most commonly into a PDF file.
-The source of this document is made up of several files, each with its own purpose:
-\begin{itemize}
-    \item \texttt{document.tex} - The main LaTeX file containing the contents of the document.
-    \item \texttt{oxycomps.sty} - A style file with settings for what the document should look like.
-    \item \texttt{references.bib} - A list of bibliography items.
-    \item Other files containing images, build instructions, etc.
-\end{itemize}
-Manual compilation of these files is somewhat esoteric, as it requires multiple uses of the \texttt{pdflatex} and \texttt{biblatex} commands.
-Instead, it is much easier to use tools such as \texttt{pdflatex} or \texttt{latexmk} (in the terminal) or Overleaf (online) for compilation.
-We have also provided a \texttt{Makefile} which will automatically update the document as necessary; the use of makefiles is beyond the scope of this document, but see \textcite{Lambert2021MakefileTutorial}.
+\end{verbatim}
 
-\begin{comment}
-No definition citations, unless the term itself is in dispute
-Separate problem background from technical background
-    Unclear if games and apps require much technical background
-    The general structure of the framework might be better suited for the Architecture Overview section
-        Eg. Flask uses decorators to associate functions with URLs
-        Eg. Unity has scripts associated with objects and specific triggers, such as walking into an area, pressing a button, etc.
-    Maybe a better name is "algorithmic background"?
-        Should explore what does and doesn't count
-            All ML counts
-            App and game frameworks do not
-        Framework vs. library?
-            I like the idea of [inversion of control](https://martinfowler.com/bliki/InversionOfControl.html), but that may be too abstract for students to understand
-        Heuristic: is understanding that system necessary to understand the results?
-            Ie. How Flask or Unity works doesn't influence whether the app/game is useful/fun/engaging
-            But how (say) linear regression works is highly relevant for why the results match/don't match the actual values
-\end{comment}
-
-\section{The Oxy CS Comps Paper}
-\label{sec:paper}
-
-This section will walk through the different sections of the comps final paper.
-Note that your specific paper may not have all these sections; for example, it is common for app design projects to combine the methods and evaluation sections, to better match the iterative design process.
-Nonetheless, your paper should have all of the \textit{content} described here.
-
-\subsection{Introduction and Problem Context}
-
-This section should motivate why the project is interesting both to you and to the computer science community or the general public.
-You should also justify the difficult of the project.
-As a rough guideline, your project should be either narrow but deep in a subfield of CS, or broadly reaching across subfields without being too shallow.
-It should be comparable to the amount of work/content in an upper-level elective.
-
-\subsection{Technical Background}
-
-This section introduces the technical knowledge necessary to understand your project, including any terminology and algorithms.
-You should assume that the reader is a CS undergraduate like yourself, but not necessarily familiar with AI/ML/HCI/apps/video games/etc.
-
-\subsection{Prior Work}
-
-This section describes of related and/or existing work.
-This could be scientific or scholarly, but may also be a survey of existing products/games.
-The goal of this section is to put your project in the context of what has already been done.
-
-\subsection{Methods}
-
-This section describes what exactly you will be working on.
-What are you building? How will it combine/incorporate ideas from the literature? Be specific about what you will be doing: talk about the specific algorithm you will implement/use, the specific dataset/platform/API, and what the outcome of your project will look like.
-All of these decisions should be justified as well.
-
-\subsection{Evaluation Metrics}
-
-This section describes how you will evaluate your project.
-What will you be measuring, and how will you measure it?
-You might think about what would result in an F, a C, or an A for comps.
-Alternately, think about what are the minimal requirements for passing the class, what you might do if you had more time and resources, and what the best case scenario would be if everything went swimmingly.
-
-\subsection{Evaluation Results and Discussion}
-
-limitations
-
-\subsection{Ethical Considerations}
-
-Are there any ethical concerns that might arise from your project?
-You might think about whether your project perpetuates societal inequity (or could be used by others to do so), whether the data/platforms you are using is collected with informed consent and free of bias, and whether you might be subject to technological solutionism instead of working support/better the public infrastructure.
-Include a discussion of how you plan to mitigate these issues in your project.
-
-\subsection{Future Work, and Conclusion}
-
-\subsection{Timeline}
-
-A timeline of major milestones, with specific items to be completed by specific dates/months.
-Note that this timeline must start over the summer; otherwise you will unlikely have enough time to complete a project of the expected scope.
-As part of the discussion around your timeline, talk about what you already know that would help you with the project, and what you expect to have to learn to be successful.
-Include programming languages, technical concepts, as well as processes (e.g., user testing).
-
-\subsection{Code Documentation}
-
-This section will demonstrate that you have thought through the basics of how your code will work. You should include a diagram of the overall data flow of your program, including what the inputs and outputs of each component will be, and how they will be represented.
-
-\subsection{Appendices}
-
-\section{Tips and Advice}
 
 \printbibliography
 
